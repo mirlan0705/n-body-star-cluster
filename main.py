@@ -4,7 +4,7 @@ import math
 
 pygame.init()
 
-width = 800
+width = 800 
 height = 800
 
 screen = pygame.display.set_mode((width, height))
@@ -28,11 +28,11 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    
-    
 
     screen.fill((0,0,0))
     for star in stars:
+        star[0] += star[2]
+        star[1] += star[3]
         pygame.draw.circle(screen, (255,255,255), (int(star[0]), int(star[1])), 2)
     
     pygame.display.flip()
