@@ -17,8 +17,8 @@ stars = []
 for i in range(50):
     x = random.uniform(100, 700)
     y = random.uniform(100, 700)
-    vx = random.uniform(-5, 5)
-    vy = random.uniform(-5, 5)
+    vx = random.uniform(-0.5, 0.5)
+    vy = random.uniform(-0.5, 0.5)
     mass = random.uniform(1, 3)
     stars.append([x,y,vx,vy,mass])
 
@@ -31,9 +31,19 @@ while running:
 
     screen.fill((0,0,0))
     for star in stars:
-        star[0] += star[2]
-        star[1] += star[3]
-        pygame.draw.circle(screen, (255,255,255), (int(star[0]), int(star[1])), 2)
+        for other in stars:
+            dx = other[0] - star[0]
+            dy = other[1] - star[1]
+
+            distance = math.sqrt((dx**2) + (dy**2))
+            distance = max(distance, 5)
+
+            nx = dx/distance
+            ny = dy/distance
+
+            star[0] += star[2]
+            star[1] += star[3]
+            pygame.draw.circle(screen, (255,255,255), (int(star[0]), int(star[1])), 2)
     
     pygame.display.flip()
     clock.tick(60)
