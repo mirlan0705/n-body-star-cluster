@@ -41,8 +41,11 @@ while running:
             nx = dx/distance
             ny = dy/distance
 
-            star[0] += star[2]
-            star[1] += star[3]
+            ax = 100 * other[4]/distance**2 * nx
+            ay = 100 * other[4]/distance**2 * ny
+
+            star[0] += ax
+            star[1] += ay
             pygame.draw.circle(screen, (255,255,255), (int(star[0]), int(star[1])), 2)
     
     pygame.display.flip()
