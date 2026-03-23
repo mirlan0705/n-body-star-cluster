@@ -1,0 +1,2 @@
+N-Body Star Cluster Simulation
+This project is a simple N-body gravity simulation built using Pygame, where multiple stars move by pulling on each other through gravity. Each star continuously calculates the forces from all other stars, updates its velocity, and changes position in real time, resulting in complex and often chaotic motion that resembles real star clusters. The simulation includes an interactive camera system, allowing you to zoom in and out using the mouse wheel and click and drag to explore different parts of the system.
