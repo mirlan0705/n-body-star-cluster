@@ -40,6 +40,17 @@ while running:
                 zoom *= 1.1
             else:
                 zoom *= 0.9
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            panning = True
+            pan_start = pygame.mouse.get_pos()
+        if event.type == pygame.MOUSEBUTTONUP:
+            panning = False
+        if event.type == pygame.MOUSEMOTION:
+            if panning:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                cam_x -= (mouse_x - pan_start[0]) / zoom
+                cam_y -= (mouse_y - pan_start[1]) / zoom
+                pan_start = (mouse_x, mouse_y)
     screen.fill((0,0,0))
     
     for star in stars:
