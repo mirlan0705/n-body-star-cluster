@@ -12,6 +12,13 @@ pygame.display.set_caption("N Body Star Cluster")
 
 clock = pygame.time.Clock()
 
+zoom = 1.0
+cam_x = 400
+cam_y = 400
+panning = False
+pan_start = (0,0)
+cam_start = (0,0)
+
 stars = []
 
 for i in range(50):
@@ -28,6 +35,11 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.MOUSEWHEEL:
+            if event.y > 0:
+                zoom *= 1.1
+            else:
+                zoom *= 0.9
     screen.fill((0,0,0))
     
     for star in stars:
@@ -48,7 +60,9 @@ while running:
         star[0] += star[2]
         star[1] += star[3]
 
-        pygame.draw.circle(screen, (255,255,255), (star[0], star[1]), 3)
+        screen_x = (star[0] - cam_x) * zoom + width / 2
+        screen_y = (star[1] - cam_y) * zoom + height / 2
+        pygame.draw.circle(screen, (255,255,255), (screen_x, screen_y), 3)
 
     pygame.display.flip()
 
