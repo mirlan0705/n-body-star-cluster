@@ -12,6 +12,30 @@ pygame.display.set_caption("N Body Star Cluster")
 
 clock = pygame.time.Clock()
 
+class QuadNode:
+    def __init__(self, cx, cy, size):
+        self.cx = cx
+        self.cy = cy
+        self.size = size
+        self.mass = 0
+        self.com_x = 0
+        self.com_y = 0
+        self.divided = False
+        self.children = [None, None, None, None]
+    def _quadrant(self, x, y):
+        if x < self.cx and y < self.cy:
+            return 0
+        if x > self.cx and y < self.cy:
+            return 1
+        if x < self.cx and y > self.cy:
+            return 2
+        if x > self.cx and y > self.cy:
+            return 3
+    def _make_child(self, q):
+        
+
+
+
 zoom = 1.0
 cam_x = 400
 cam_y = 400
@@ -104,4 +128,5 @@ while running:
     pygame.display.flip()
 
     clock.tick(60)
+    print(clock.get_fps())
 pygame.quit()
