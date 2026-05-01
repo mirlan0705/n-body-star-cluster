@@ -20,20 +20,43 @@ class QuadNode:
         self.mass = 0
         self.com_x = 0
         self.com_y = 0
+        self.body = None
         self.divided = False
         self.children = [None, None, None, None]
+
     def _quadrant(self, x, y):
         if x < self.cx and y < self.cy:
             return 0
-        if x > self.cx and y < self.cy:
+        if x >= self.cx and y < self.cy:
             return 1
-        if x < self.cx and y > self.cy:
+        if x < self.cx and y >= self.cy:
             return 2
-        if x > self.cx and y > self.cy:
+        if x >= self.cx and y >= self.cy:
             return 3
-    def _make_child(self, q):
         
-
+    def _make_child(self, q):
+        half = self.size / 2
+        if q == 0:
+            return QuadNode(self.cx - half, self.cy - half, half)
+        if q == 1:
+            return QuadNode(self.cx + half, self.cy - half, half)
+        if q == 2:
+            return QuadNode(self.cx - half, self.cy + half, half)
+        if q == 3:
+            return QuadNode(self.cx + half, self.cy + half, half)
+        
+    def insert(self, stars, idx):
+        x = stars[idx][0]
+        y = stars[idx][1]
+        m = stars[idx][4]
+        new_mass = self.mass + m
+        self.com_x = (self.com_x * self.mass + x * m) / new_mass
+        self.com_y = (self.com_y * self.mass + y * m) / new_mass
+        self.mass = new_mass
+        if self.body is None and not self.divided:
+            self.body = idx
+            return
+            
 
 
 zoom = 1.0
