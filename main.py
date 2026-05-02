@@ -12,6 +12,8 @@ pygame.display.set_caption("N Body Star Cluster")
 
 clock = pygame.time.Clock()
 
+G = 0.5
+
 class QuadNode:
     def __init__(self, cx, cy, size):
         self.cx = cx
@@ -34,11 +36,54 @@ class QuadNode:
         if star[0] > self.cx and star[1] > self.cy:
             return 3
         
-    def insert(self, q):
-        half = self.size / 2
-        star[4] = m1 + m2
-        star[0] = (x1m1 + x2m2) / star[4]
-        star[1] = (y1m1 + y2m2) / star[4]
+    def insert(self, star):
+        if self.mass == 0:
+            self.com_x = star[0]
+            self.com_y = star[1]
+            self.mass = star[4]
+        else:
+            total = self.mass + star[4]
+            self.com_x = (self.com_x * self.mass + star[0] * star[4]) / total
+            self.com_y = (self.com_y * self.mass + star[1] * star[4]) / total
+            self.mass = total
+        if not self.divided and self.body is None:
+            self.body = star
+            return
+        if not self.divided and self.body is not None:
+            half = self.size/2
+            self.children[0] = QuadNode(self.cx - half, self.cy - half, half) #NW
+            self.children[1] = QuadNode(self.cx + half, self.cy - half, half) #NE
+            self.children[2] = QuadNode(self.cx - half, self.cy + half, half) #SW
+            self.children[3] = QuadNode(self.cx + half, self.cy + half, half) #SE
+            self.divided = True
+            self.children[self._quadrant(self.body)].insert(self.body)
+            self.body = None
+            self.children[self._quadrant(star)].insert(star)
+            return
+        if self.divided:
+            self.children[self._quadrant(star)].insert(star)
+    def calculate_force(self, star, G, theta, softening):
+        if self.mass == 0:
+            return 0, 0
+        if not self.divided and self.body is star:
+            return 0, 0
+        dx = self.com_x - star[0]
+        dy = self.com_y - star[1]
+        dist = math.sqrt(dx*dx + dy*dy)
+        if self.size / dist < theta:
+            force = G * self.mass / (dist*dist + softening)
+            ax = force * dx / dist
+            ay = force * dy / dist
+            return ax, ay
+        ax = 0
+        ay = 0
+        for child in self.children:
+            if child is not None:
+                fx, fy = child.calculate_force(star, G, theta, softening)
+                ax += fx
+                ay += fy
+        return ax, ay
+
 
 
 
@@ -51,7 +96,7 @@ cam_start = (0,0)
 
 stars = []
 
-for i in range(50):
+for i in range(100):
     x = random.uniform(100, 700)
     y = random.uniform(100, 700)
     vx = random.uniform(-0.05, 0.05)
@@ -91,20 +136,21 @@ while running:
                 pan_start = (mouse_x, mouse_y)
     screen.fill((0,0,0))
     
+    all_x = [s[0] for s in stars]
+    all_y = [s[1] for s in stars]
+    cx = (max(all_x) + min(all_x)) / 2
+    cy = (max(all_y) + min(all_y)) / 2
+    size = max(max(all_x) - min(all_x), max(all_y) - min(all_y)) / 2 + 100
+    root = QuadNode(cx, cy, size)
+    for s in stars:
+        root.insert(s)
+
+    
     for star in stars:
-        for other in stars:    
-            if star == other:
-                continue
+        ax, ay = root.calculate_force(star, G, 0.5, 50)
+        star[2] += ax
+        star[3] += ay
 
-            dx = other[0] - star[0]
-            dy = other[1] - star[1]
-            distance = math.sqrt(dx**2 + dy**2)
-            force = 0.5 * other[4] / (distance**2+50)
-            ax = force * dx/distance
-            ay = force * dy/distance
-
-            star[2] += ax
-            star[3] += ay
 
         star[0] += star[2]
         star[1] += star[3]
