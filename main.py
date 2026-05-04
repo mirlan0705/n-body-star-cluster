@@ -29,11 +29,11 @@ class QuadNode:
     def _quadrant(self, star):
         if star[0] < self.cx and star[1] < self.cy:
             return 0
-        if star[0] > self.cx and star[1] < self.cy:
+        if star[0] >= self.cx and star[1] < self.cy:
             return 1
-        if star[0] < self.cx and star[1] > self.cy:
+        if star[0] < self.cx and star[1] >= self.cy:
             return 2
-        if star[0] > self.cx and star[1] > self.cy:
+        else:
             return 3
         
     def insert(self, star):
@@ -85,8 +85,6 @@ class QuadNode:
         return ax, ay
 
 
-
-
 zoom = 1.0
 cam_x = 400
 cam_y = 400
@@ -112,6 +110,9 @@ def star_color(mass):
     else:
         return (255, 100, 60)
 
+font = pygame.font.SysFont("monospace", 14)
+show_tree = False
+
 running = True
 
 while running:
@@ -134,6 +135,10 @@ while running:
                 cam_x -= (mouse_x - pan_start[0]) / zoom
                 cam_y -= (mouse_y - pan_start[1]) / zoom
                 pan_start = (mouse_x, mouse_y)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                show_tree = not show_tree
+
     screen.fill((0,0,0))
     
     all_x = [s[0] for s in stars]
@@ -177,7 +182,7 @@ while running:
         screen_y = (star[1] - cam_y) * zoom + height / 2
         pygame.draw.circle(screen, (star_color(star[4])), (int(screen_x), int(screen_y)), max(2, int(star[4])))
 
+    screen.blit(font.render(f"FPS: {int(clock.get_fps())}  Stars: {len(stars)}", True, (255,255,255)), (10, 10))
     pygame.display.flip()
-
     clock.tick(60)
 pygame.quit()
