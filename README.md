@@ -1,6 +1,14 @@
 n-body star cluster
 Small Python simulation of a few hundred gravitating bodies. I built the first version over a weekend, and have been chipping away at it since — most recently rewriting the force calculation to use Barnes-Hut so it doesn't grind to a halt with bigger clusters.
-What it does
+## Comparison
+
+| Brute Force O(n²) | Barnes-Hut O(n log n) |
+|---|---|
+| ![Brute Force](brute_force.gif) | ![Barnes-Hut](simulation.gif) |
+
+Same 500 stars, same initial conditions. Brute force runs at 3-4 FPS, Barnes-Hut at 7-8 FPS — roughly 2x faster, and the gap widens as star count increases.
+
+## What it does
 A few hundred star-like point masses get scattered with random velocities inside a roughly spherical volume, then left alone. Newtonian gravity does the rest. Over time you get the things you'd expect from a real cluster — close pairs forming, looser stars wandering off, occasional slingshots when something passes too close to a tight binary. Nothing fancy. But it's genuinely satisfying to watch emerge from a few hundred lines of code and the inverse-square law.
 The Barnes-Hut bit
 The original version was a straightforward double loop: for every body, sum the gravitational pull from every other body. That's O(n²), and it shows. With 500 bodies the framerate was crawling.
