@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+from PIL import Image 
 
 pygame.init()
 
@@ -93,19 +94,17 @@ class QuadNode:
                 if child is not None:
                     child.draw(surface, cam_x, cam_y, zoom, width, height)
         
-
-
-
 zoom = 1.0
 cam_x = 400
 cam_y = 400
 panning = False
 pan_start = (0,0)
 cam_start = (0,0)
-
+frames = []
 stars = []
+recording = False
 
-for i in range(100):
+for i in range(500):
     x = random.uniform(100, 700)
     y = random.uniform(100, 700)
     vx = random.uniform(-0.05, 0.05)
@@ -149,6 +148,11 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
                 show_tree = not show_tree
+            if event.key == pygame.K_r:
+                recording = not recording
+            if event.key == pygame.K_s:
+                frames[0].save("simulation.gif", save_all=True, append_images=frames[1:], duration = 33, loop = 0)
+
 
     screen.fill((0,0,0))
     
@@ -197,7 +201,11 @@ while running:
 
     screen.blit(font.render(f"FPS: {int(clock.get_fps())}  Stars: {len(stars)}", True, (255,255,255)), (10, 10))
     screen.blit(font.render("Q: toggle quadtree", True, (100, 100, 100)), (10, 30))
-
+    if recording:
+        frame = pygame.surfarray.array3d(screen)
+        frame = frame.transpose([1, 0, 2])
+        frames.append(Image.fromarray(frame))
     pygame.display.flip()
     clock.tick(60)
+    
 pygame.quit()
