@@ -1,5 +1,4 @@
 n-body star cluster
-![Brute Force](brute_force.gif)
 
 Small Python simulation of a few hundred gravitating bodies. I built the first version over a weekend, and have been chipping away at it since — most recently rewriting the force calculation to use Barnes-Hut so it doesn't grind to a halt with bigger clusters.
 ## Comparison
