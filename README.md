@@ -7,7 +7,7 @@ Small Python simulation of a few hundred gravitating bodies. I built the first v
 |---|---|
 | ![Brute Force](brute_force.gif) | ![Barnes-Hut](simulation.gif) |
 
-Same 500 stars, same initial conditions. Brute force runs at 3-4 FPS, Barnes-Hut at 7-8 FPS — roughly 2x faster, and the gap widens as star count increases.
+Same 500 stars, same initial conditions. Brute force runs at 3-4 FPS, Barnes-Hut at 7-8 FPS roughly 2x faster, and the gap widens as star count increases.
 
 ## What it does
 A few hundred star-like point masses get scattered with random velocities inside a roughly spherical volume, then left alone. Newtonian gravity does the rest. Over time you get the things you'd expect from a real cluster close pairs forming, looser stars wandering off, occasional slingshots when something passes too close to a tight binary. Nothing fancy. But it's genuinely satisfying to watch emerge from a few hundred lines of code and the inverse-square law.
