@@ -83,6 +83,17 @@ class QuadNode:
                 ax += fx
                 ay += fy
         return ax, ay
+    def draw(self, surface, cam_x, cam_y, zoom, width, height):
+        x = int((self.cx - self.size - cam_x) * zoom + width / 2)
+        y = int((self.cy - self.size - cam_y) * zoom + height / 2)
+        s = int(self.size * 2 * zoom)
+        pygame.draw.rect(surface, (0, 60, 30), (x, y, s, s), 1)
+        if self.divided:
+            for child in self.children:
+                if child is not None:
+                    child.draw(surface, cam_x, cam_y, zoom, width, height)
+        
+
 
 
 zoom = 1.0
@@ -149,6 +160,8 @@ while running:
     root = QuadNode(cx, cy, size)
     for s in stars:
         root.insert(s)
+    if show_tree:
+            root.draw(screen, cam_x, cam_y, zoom, width, height)
 
     
     for star in stars:
@@ -183,6 +196,8 @@ while running:
         pygame.draw.circle(screen, (star_color(star[4])), (int(screen_x), int(screen_y)), max(2, int(star[4])))
 
     screen.blit(font.render(f"FPS: {int(clock.get_fps())}  Stars: {len(stars)}", True, (255,255,255)), (10, 10))
+    screen.blit(font.render("Q: toggle quadtree", True, (100, 100, 100)), (10, 30))
+
     pygame.display.flip()
     clock.tick(60)
 pygame.quit()
