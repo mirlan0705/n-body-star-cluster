@@ -34,7 +34,6 @@ N_BODIES — number of stars. Try 100 first, then push it.
 THETA — Barnes-Hut threshold. ~0.5 is the usual default. Lower = more accurate, slower. Higher = faster, sloppier.
 DT — timestep. Smaller is more stable, but linearly slower.
 
-What I learned / what's next
 Honestly the most useful thing this project has taught me has very little to do with physics. It's that "the algorithm" and "the implementation" are two different problems, and you can spend a week debugging the second without realising. I knew what an O(n²) loop was before I started. Writing one that didn't accidentally compare objects by identity instead of equality, or update positions and velocities in the wrong order, was a different skill — and one I needed two rewrites to actually internalise.
 Things I want to come back to:
 
@@ -42,4 +41,4 @@ A proper integrator (leapfrog or kick-drift-kick) instead of the basic Euler ste
 Octree instead of quadtree, for proper 3D.
 Softening parameter tuning, so close pairs don't fling each other to infinity.
 
-Eventually this feeds into a Schwarzschild geodesic / black hole rendering project. Barnes-Hut won't be directly useful there, but the muscle memory for spatial data structures and numerical stability will be.
+I believe the muscle memory for spatial data structures and numerical stability I learnt from this will be useful for future simulations.
