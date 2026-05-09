@@ -1,6 +1,6 @@
 n-body star cluster
 
-Small Python simulation of a few hundred gravitating bodies. I built the first version over a weekend, and have been chipping away at it since. Most recently rewriting the force calculation to use Barnes-Hut so it doesn't grind to a halt with bigger clusters.
+Python simulation of a few hundred gravitating bodies. I built the first version over a weekend, and have been chipping away at it since. Most recently rewriting the force calculation to use Barnes-Hut so it doesn't grind to a halt with bigger clusters.
 ## Comparison
 
 | Brute Force O(n²) | Barnes-Hut O(n log n) |
@@ -31,7 +31,7 @@ Tested on Python 3.11. Pygame and NumPy are the only real dependencies.
 A few things to tweak in config.py:
 
 N_BODIES — number of stars. Try 100 first, then push it.
-THETA — Barnes-Hut threshold. ~0.5 is the usual default. Lower = more accurate, slower. Higher = faster, sloppier.
+THETA — Barnes-Hut threshold. 0.5 is the usual default. Lower = more accurate, slower. Higher = faster, sloppier.
 DT — timestep. Smaller is more stable, but linearly slower.
 
 Honestly the most useful thing this project has taught me has very little to do with physics. It's that "the algorithm" and "the implementation" are two different problems, and you can spend a week debugging the second without realising. I knew what an O(n²) loop was before I started. Writing one that didn't accidentally compare objects by identity instead of equality, or update positions and velocities in the wrong order, was a different skill — and one I needed two rewrites to actually internalise.
